@@ -1,0 +1,122 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.fordham.wisdm.gaitdetector.TaskSelectionActivity"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:fillViewport="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFC0CB"
+            android:text="Test Activity 1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#90EE90"
+            android:text="Test Activity 2"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFC0CB"
+            android:text="Test Activity 3"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#90EE90"
+            android:text="Test Activity 4"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFC0CB"
+            android:text="Test Activity 5"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#90EE90"
+            android:text="Test Activity 6"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFC0CB"
+            android:text="Test Activity 7"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#90EE90"
+            android:text="Test Activity 8"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFC0CB"
+            android:text="Test Activity 9"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#90EE90"
+            android:text="Test Activity 10"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFC0CB"
+            android:text="Test Activity 11"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#90EE90"
+            android:text="Test Activity 12"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="20dp"
+            />
+    </LinearLayout>
+</ScrollView>
