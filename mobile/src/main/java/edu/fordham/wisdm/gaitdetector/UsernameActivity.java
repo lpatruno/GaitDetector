@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 /**
  * To be filled in by Julia Getsos
@@ -29,7 +33,30 @@ public class UsernameActivity extends Activity {
 
         Log.d(TAG, "onCreated method called");
 
+        Button next= (Button)findViewById(R.id.next);
 
+
+        next.setOnClickListener(new View.OnClickListener() {
+            /**
+             * function that waits for user to click next button
+             * and determines if entered username is valid.
+             *
+             * @param v
+             */
+            @Override
+            public void onClick(View v) {
+
+                EditText username= (EditText)findViewById(R.id.username);
+                final String name= username.getText().toString();
+
+                if(!name.equals(""))
+                    Toast.makeText(getApplicationContext(), "Name:" + name, Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getApplicationContext(), "Please enter valid username", Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
 
 
     }
