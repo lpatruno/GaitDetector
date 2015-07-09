@@ -16,6 +16,7 @@ public class UsernameActivity extends Activity {
      */
     private final String TAG = "UsernameActivity";
 
+
     /**
      * Function to load the UI elements
      *
@@ -27,7 +28,12 @@ public class UsernameActivity extends Activity {
         setContentView(R.layout.activity_username);
 
         Log.d(TAG, "onCreated method called");
+
+
+
+
     }
+
 
 
     @Override
