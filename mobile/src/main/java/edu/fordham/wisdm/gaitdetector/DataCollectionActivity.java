@@ -3,8 +3,10 @@ package edu.fordham.wisdm.gaitdetector;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -69,6 +71,7 @@ public class DataCollectionActivity extends Activity {
         mStopButton = (Button) findViewById(R.id.dca_stop_button);
 
         retrieveAndSetPassedData();
+        setButtonClickListeners();
     }
 
     /**
@@ -90,6 +93,26 @@ public class DataCollectionActivity extends Activity {
 
         mUsername.setText(username);
         mTask.setText(task);
+    }
+
+    /**
+     * Function to set the start/stop button click listeners for the DataCollectionActivity
+     */
+    private void setButtonClickListeners(){
+
+        mStartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Clicked Start button");
+            }
+        });
+
+        mStopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Clicked Stop button");
+            }
+        });
     }
 
     @Override

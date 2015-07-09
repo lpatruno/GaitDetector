@@ -10,6 +10,10 @@
         <activity
             android:name=".UsernameActivity"
             android:label="@string/title_activity_username" >
+        </activity>
+        <activity
+            android:name=".DataCollectionActivity"
+            android:label="@string/title_activity_data_collection" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
