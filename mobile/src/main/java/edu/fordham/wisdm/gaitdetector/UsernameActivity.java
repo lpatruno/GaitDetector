@@ -47,10 +47,10 @@ public class UsernameActivity extends Activity {
             public void onClick(View v) {
 
                 EditText username= (EditText)findViewById(R.id.username);
-                final String name= username.getText().toString();
+                final String name= username.getText().toString().toLowerCase().replace(" ","_");
 
                 if(!name.equals(""))
-                    Toast.makeText(getApplicationContext(), "Name:" + name, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Name: " + name, Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(getApplicationContext(), "Please enter valid username", Toast.LENGTH_SHORT).show();
 
