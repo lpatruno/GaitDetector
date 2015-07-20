@@ -4,14 +4,36 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.Intent;
+import android.widget.TextView;
 
 
 public class DemographicActivity extends ActionBarActivity {
+
+    /**
+     * String to hold all lower case version of username with ' ' replaced with '_'
+     */
+    private String mUsernameString;
+
+    /**
+     * TextView to display username
+     */
+    private TextView mUsernameTextView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demographic);
+
+        /**
+         * Extract username string from intent and display on screen
+         */
+        Intent intent = getIntent();
+        mUsernameString = intent.getExtras().getString("username").toUpperCase().replace("_", " ");
+        mUsernameTextView = (TextView)findViewById(R.id.username_textview);
+        mUsernameTextView.setText(mUsernameString);
     }
 
     @Override

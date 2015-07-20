@@ -2,7 +2,16 @@
     <string name="app_name">GaitDetector</string>
     <string name="title_activity_username">UsernameActivity</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_demographic">DemographicActivity</string>
+    
+    <string name="handedness_prompt">Select handedness</string>
+    <string-array name="handedness_array">
+        <item>Left</item>
+        <item>Right</item>
+        <item>Both</item>
+    </string-array>
+    
+    
+    
 </resources>

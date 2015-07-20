@@ -16,8 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
+
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/username_name_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -25,7 +26,7 @@
         android:hint="Enter name"/>
 
     <Button
-        android:id="@+id/next"
+        android:id="@+id/username_next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

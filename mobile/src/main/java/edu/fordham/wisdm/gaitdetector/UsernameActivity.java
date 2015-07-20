@@ -9,9 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.content.Intent;
+
 
 /**
- * To be filled in by Julia Getsos
+ * Class that prompts user to input name.
+ * Name is then converted into all lowercase version with ' ' replaced
+ * with '_'.
+ *
  */
 public class UsernameActivity extends Activity {
 
@@ -20,10 +25,22 @@ public class UsernameActivity extends Activity {
      */
     private final String TAG = "UsernameActivity";
 
+
     /**
      * Button to begin next activity
      */
     private Button mNextButton;
+
+    /**
+     * EditText to hold username
+     */
+    private EditText mUsernameText;
+
+    /**
+     * String to hold all lower case version of username with ' ' replaced with '_'
+     */
+    private String mUsernameString;
+
 
 
     /**
@@ -38,11 +55,10 @@ public class UsernameActivity extends Activity {
 
         Log.d(TAG, "onCreate method called");
 
-        // mNextButton = (Button)findViewById(R.id.next);
-        Button next= (Button)findViewById(R.id.next);
+        mNextButton = (Button)findViewById(R.id.username_next_button);
+        mUsernameText = (EditText) findViewById(R.id.username_name_field);
 
-
-        next.setOnClickListener(new View.OnClickListener() {
+        mNextButton.setOnClickListener(new View.OnClickListener() {
             /**
              * function that waits for user to click next button
              * and determines if entered username is valid.
@@ -52,15 +68,15 @@ public class UsernameActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                // Declare the EditText variable outside of the onCreate method.
-                // Initialize the EditText variable outside of the click handler
-                EditText username = (EditText) findViewById(R.id.username);
-                final String name = username.getText().toString().toLowerCase().replace(" ", "_");
+                mUsernameString = mUsernameText.getText().toString().toLowerCase().replace(" ", "_");
 
-                if (!name.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Name: " + name, Toast.LENGTH_SHORT).show();
-                }
-                else {
+                if (!mUsernameString.equals("")) {
+                    //Toast.makeText(getApplicationContext(), "Name: " + mUsernameString, Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(UsernameActivity.this, DemographicActivity.class);
+                    i.putExtra("username", mUsernameString);
+                    startActivity(i);
+
+                } else {
                     Toast.makeText(getApplicationContext(), "Please enter valid username", Toast.LENGTH_SHORT).show();
                 }
 
