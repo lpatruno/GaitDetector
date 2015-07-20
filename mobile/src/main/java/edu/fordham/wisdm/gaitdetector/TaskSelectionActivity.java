@@ -2,18 +2,60 @@ package edu.fordham.wisdm.gaitdetector;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View.OnClickListener;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 /**
- * To be filled (class description)
+ * Class to select specific activity to start. Gives activity completion status through background
+ * color of individual dropdown spinner item. Green indicates completed task, red indicates
+ * incomplete task.
  */
 public class TaskSelectionActivity extends Activity {
+
+    /**
+     * Dropdown spinner to select activity.
+     */
+    private Spinner mActivitySpinner;
+
+    /**
+     * Button to start selected activity.
+     */
+    private Button mStartButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_selection);
+
+        addListenerOnButton();
+    }
+
+    /**
+     * Function that waits for user to select activity from spinner and displays the choice.
+     */
+    public void addListenerOnButton() {
+
+        mActivitySpinner = (Spinner) findViewById(R.id.activity_spinner);
+        mStartButton = (Button) findViewById(R.id.taskselection_start_button);
+
+        mStartButton.setOnClickListener(new OnClickListener() {
+
+            /**
+             * Function that makes a toast indicating which activity was selected.
+             * @param v
+             */
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(TaskSelectionActivity.this,
+                        "Spinner Selection: " + String.valueOf(mActivitySpinner.getSelectedItem()),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
