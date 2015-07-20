@@ -20,6 +20,11 @@ public class UsernameActivity extends Activity {
      */
     private final String TAG = "UsernameActivity";
 
+    /**
+     * Button to begin next activity
+     */
+    private Button mNextButton;
+
 
     /**
      * Function to load the UI elements
@@ -31,8 +36,9 @@ public class UsernameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_username);
 
-        Log.d(TAG, "onCreated method called");
+        Log.d(TAG, "onCreate method called");
 
+        // mNextButton = (Button)findViewById(R.id.next);
         Button next= (Button)findViewById(R.id.next);
 
 
@@ -46,13 +52,17 @@ public class UsernameActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                EditText username= (EditText)findViewById(R.id.username);
-                final String name= username.getText().toString().toLowerCase().replace(" ","_");
+                // Declare the EditText variable outside of the onCreate method.
+                // Initialize the EditText variable outside of the click handler
+                EditText username = (EditText) findViewById(R.id.username);
+                final String name = username.getText().toString().toLowerCase().replace(" ", "_");
 
-                if(!name.equals(""))
+                if (!name.equals("")) {
                     Toast.makeText(getApplicationContext(), "Name: " + name, Toast.LENGTH_SHORT).show();
-                else
+                }
+                else {
                     Toast.makeText(getApplicationContext(), "Please enter valid username", Toast.LENGTH_SHORT).show();
+                }
 
             }
 
