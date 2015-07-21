@@ -21,7 +21,8 @@
     <TextView
         android:text="Choose Gender"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"/>
 
     <RadioGroup
         android:id="@+id/radioGender"
@@ -35,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Male"
+            android:onClick="onRadioGenderClicked"
             />
 
         <RadioButton
@@ -42,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Female"
+            android:onClick="onRadioGenderClicked"
             />
 
     </RadioGroup>

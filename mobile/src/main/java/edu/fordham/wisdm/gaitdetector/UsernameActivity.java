@@ -44,7 +44,7 @@ public class UsernameActivity extends Activity {
 
 
     /**
-     * Function to load the UI elements
+     * method to load the UI elements
      *
      * @param savedInstanceState
      */
@@ -58,9 +58,12 @@ public class UsernameActivity extends Activity {
         mNextButton = (Button)findViewById(R.id.username_next_button);
         mUsernameText = (EditText) findViewById(R.id.username_name_field);
 
+        /**
+         * method that waits for user to click next button
+         */
         mNextButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * function that waits for user to click next button
+             * method called when user clicks next button
              * and determines if entered username is valid.
              *
              * @param v
@@ -68,7 +71,8 @@ public class UsernameActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                mUsernameString = mUsernameText.getText().toString().toLowerCase().replace(" ", "_");
+                // convert the user input to a string
+                mUsernameString = mUsernameText.getText().toString();
 
                 if (!mUsernameString.equals("")) {
                     //Toast.makeText(getApplicationContext(), "Name: " + mUsernameString, Toast.LENGTH_SHORT).show();
