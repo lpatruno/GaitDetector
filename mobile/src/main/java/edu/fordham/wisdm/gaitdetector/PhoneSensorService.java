@@ -220,7 +220,7 @@ public class PhoneSensorService extends Service implements SensorEventListener {
 
         // Email files
         new Thread(
-                new EmailData("wisdm.gait@gmail.com", "bergbalancescale", username,
+                new EmailData("wisdm.gaitlab@gmail.com", "WiSdM403!", username,
                         accelerometerFile.getAbsolutePath(), gyroscopeFile.getAbsolutePath())).start();
     }
 
@@ -260,6 +260,7 @@ public class PhoneSensorService extends Service implements SensorEventListener {
         // Gmail account data
         private final String email;
         private final String password;
+        private final String recipient = "wisdm.gait@gmail.com";
 
         // Username
         private final String username;
@@ -294,7 +295,7 @@ public class PhoneSensorService extends Service implements SensorEventListener {
             GMailSender sender = new GMailSender(email, password);
             try {
                 File[] attach = {phoneAccelerometerFile, phoneGyroscopeFile};
-                sender.sendMail("Data for " + username, "This is the data", email, email, attach);
+                sender.sendMail("Data for " + username, "This is the data", email, recipient, attach);
             } catch (Exception e) {
                 Log.e(TAG, "error");
             }
