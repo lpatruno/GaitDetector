@@ -1,9 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/activity_prompt"
+        android:textSize="20sp"/>
+
+    <ListView
+        android:id="@+id/taskselection_activitylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:listSelector="@android:color/holo_blue_light"/>
+
+    <Button
+        android:id="@+id/taskselection_startbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_start"/>
+
+</LinearLayout>
+
+
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="edu.fordham.wisdm.gaitdetector.TaskSelectionActivity"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
 
@@ -21,7 +51,8 @@
         android:layout_height="wrap_content"
         android:text="@string/activity_start" />
 
-</LinearLayout>
+</LinearLayout>-->
+
 
     <!-- Alternate layout using ScrollView
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -41,108 +72,108 @@
             <TextView
                 android:id="@+id/tv1"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#FFC0CB"
                 android:text="Test Activity 1"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
 
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#90EE90"
                 android:text="Test Activity 2"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#FFC0CB"
                 android:text="Test Activity 3"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
 
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#90EE90"
                 android:text="Test Activity 4"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
 
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#FFC0CB"
                 android:text="Test Activity 5"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
 
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#90EE90"
                 android:text="Test Activity 6"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
 
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#FFC0CB"
                 android:text="Test Activity 7"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
 
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#90EE90"
                 android:text="Test Activity 8"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
 
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#FFC0CB"
                 android:text="Test Activity 9"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
 
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#90EE90"
                 android:text="Test Activity 10"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
 
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#FFC0CB"
                 android:text="Test Activity 11"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
 
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:background="#90EE90"
                 android:text="Test Activity 12"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
                 android:padding="20dp"
                 />
         </LinearLayout>
