@@ -1,14 +1,18 @@
 package edu.fordham.wisdm.gaitdetector;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 
 /**
  * Activity to allow user to start/stop sensor data collection.
@@ -51,6 +55,26 @@ public class DataCollectionActivity extends Activity {
      * Button to stop the data sampling service
      */
     private Button mStopButton;
+
+    /**
+     * Intent to trigger the PhoneSensorService
+     */
+    private Intent phoneSensorServiceIntent;
+
+    /**
+     * Builder for Android Notification
+     */
+    private NotificationCompat.Builder notificationBuilder;
+
+    /**
+     * Manager used to issue the Notification when the PhoneSensorService is started
+     */
+    private NotificationManager notificationManager;
+
+    /**
+     * Id number passed to the NotificationManager to issue and cancel Notification
+     */
+    private final int NOTIFICATION_ID = 0;
 
     /**
      * Initialize the UI for the DataCollectionActivity.
@@ -100,20 +124,79 @@ public class DataCollectionActivity extends Activity {
      */
     private void setButtonClickListeners(){
 
+        /**
+         * If the service is not running, start the service and issue a notification.
+         */
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Clicked Start button");
+
+                if (!isMyServiceRunning(PhoneSensorService.class)) {
+                    phoneSensorServiceIntent =
+                            new Intent(getApplicationContext(), PhoneSensorService.class);
+
+                    // Pass this data for file labeling purposes
+                    phoneSensorServiceIntent.putExtra("USERNAME", username);
+                    phoneSensorServiceIntent.putExtra("TASK", task);
+
+                    startService(phoneSensorServiceIntent);
+
+                    createNotification();
+                }
             }
         });
 
+        /**
+         * If the service is running, stop the service and cancel the notification.
+         */
         mStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Clicked Stop button");
+
+                if (isMyServiceRunning(PhoneSensorService.class)) {
+                    stopService(phoneSensorServiceIntent);
+                    notificationManager.cancel(NOTIFICATION_ID);
+                }
             }
         });
     }
+
+    /**
+     * Create notification that appears if the service is started successfully.
+     */
+    private void createNotification(){
+
+        notificationBuilder = new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.cast_ic_notification_0)
+                        .setTicker("GaitDetector service started")
+                        .setContentTitle("GaitDetector")
+                        .setContentText("Sampling device sensors")
+                        .setOngoing(true);
+
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+    }
+
+
+    /**
+     * Function to check if a service is running.
+     *
+     * See the accepted answer to this StackOverflow post
+     * http://stackoverflow.com/questions/600207/how-to-check-if-a-service-is-running-on-android
+     * @param serviceClass
+     * @return
+     */
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

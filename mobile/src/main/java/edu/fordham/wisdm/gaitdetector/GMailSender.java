@@ -1,5 +1,7 @@
 package edu.fordham.wisdm.gaitdetector;
 
+import android.util.Log;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -71,7 +73,10 @@ public class GMailSender extends javax.mail.Authenticator {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
         else
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
+
+        Log.d("Gmail", "about to send");
         Transport.send(message);
+        Log.d("Gmail", "sent");
     }
 
     public void addAttachment(File file,String subject) throws Exception {
@@ -79,12 +84,14 @@ public class GMailSender extends javax.mail.Authenticator {
         DataSource source = new FileDataSource(file);
         messageBodyPart.setDataHandler(new DataHandler(source));
         messageBodyPart.setFileName(file.getName());
+
         _multipart.addBodyPart(messageBodyPart);
 
         BodyPart messageBodyPart2 = new MimeBodyPart();
         messageBodyPart2.setText(subject);
 
         _multipart.addBodyPart(messageBodyPart2);
+
     }
 
     public class ByteArrayDataSource implements DataSource {

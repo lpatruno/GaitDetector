@@ -175,9 +175,6 @@ public class PhoneSensorService extends Service implements SensorEventListener {
 
         final String usernameLower = username.toLowerCase().replace(" ", "_");
 
-        final String accelerometerFileHandle = usernameLower + "_" + "taskHere" + "_phone_accel.txt";
-        final String gyroscopeFileHandle = usernameLower + "_" + "taskHere" + "_phone_gyro.txt";
-
         File rootDirectory =
                 new File(Environment.getExternalStorageDirectory() + File.separator
                         + "GaitDetector" + File.separator + usernameLower);
@@ -187,8 +184,14 @@ public class PhoneSensorService extends Service implements SensorEventListener {
             rootDirectory.mkdirs();
         }
 
-        File accelerometerFile = new File(rootDirectory.getPath() + File.separator + accelerometerFileHandle);
-        File gyroscopeFile = new File(rootDirectory.getPath() + File.separator + gyroscopeFileHandle);
+        final String accelerometerFileHandle =
+                rootDirectory.getPath() + File.separator + usernameLower + "_" + "taskHere" + "_phone_accel.txt";
+
+        final String gyroscopeFileHandle =
+                rootDirectory.getPath() + File.separator + usernameLower + "_" + "taskHere" + "_phone_gyro.txt";
+
+        File accelerometerFile = new File(accelerometerFileHandle);
+        File gyroscopeFile = new File(gyroscopeFileHandle);
 
         // Write the accel records to a file
         PrintWriter writer = null;
@@ -215,6 +218,10 @@ public class PhoneSensorService extends Service implements SensorEventListener {
             e.printStackTrace();
         }
 
+        // Email files
+        new Thread(
+                new EmailData("wisdm.gait@gmail.com", "bergbalancescale", username,
+                        accelerometerFile.getAbsolutePath(), gyroscopeFile.getAbsolutePath())).start();
     }
 
     /**
@@ -238,5 +245,60 @@ public class PhoneSensorService extends Service implements SensorEventListener {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+
+    /**
+     * Class to email the sensor data files as attachments.
+     * This class implements runnable in order to be run in a separate thread.
+     *
+     */
+    class EmailData implements Runnable {
+
+        private final String TAG = "EmailData";
+
+        // Gmail account data
+        private final String email;
+        private final String password;
+
+        // Username
+        private final String username;
+
+        // Sensor data files
+        private File phoneAccelerometerFile;
+        private File phoneGyroscopeFile;
+
+        /**
+         * Constructor for the email task.
+         *
+         * @param email
+         * @param password
+         * @param phoneAccel
+         * @param phoneGyro
+         */
+        public EmailData(String email, String password, String username, String phoneAccel, String phoneGyro) {
+            this.email = email;
+            this.password = password;
+            this.username = username;
+            this.phoneAccelerometerFile = new File(phoneAccel);
+            this.phoneGyroscopeFile = new File(phoneGyro);
+        }
+
+        /**
+         * Method called when the runnable is initiated in the thread. This sends an email
+         * containing the sensor data in another Thread.
+         *
+         */
+        @Override
+        public void run() {
+            GMailSender sender = new GMailSender(email, password);
+            try {
+                File[] attach = {phoneAccelerometerFile, phoneGyroscopeFile};
+                sender.sendMail("Data for " + username, "This is the data", email, email, attach);
+            } catch (Exception e) {
+                Log.e(TAG, "error");
+            }
+        }
+
     }
 }
