@@ -33,4 +33,13 @@ public class Task {
         this.completionDate = completionDate;
         this.completionIcon = completionIcon;
     }
+
+    /**
+     * toString Override to access the taskID
+     * @return
+     */
+    @Override
+    public String toString(){
+        return this.taskID;
+    }
 }

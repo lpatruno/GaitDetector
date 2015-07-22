@@ -2,6 +2,7 @@ package edu.fordham.wisdm.gaitdetector;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,11 +14,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 /**
  * Class to select specific activity to start. Gives task title, completion status through an icon,
  * and task completion date if applicable.
  */
 public class TaskSelectionActivity extends Activity {
+
+    /**
+     * String for tagging purposes
+     */
+    private static final String TAG = "TaskSelectionActivity";
 
     /**
      * Button to start selected task.
@@ -34,31 +42,36 @@ public class TaskSelectionActivity extends Activity {
      */
     private String taskChosen;
 
+    /**
+     * Hashmap containing the BBS task numbers and labels
+     */
+    private HashMap<String, String> tasksMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_selection);
 
-
         Resources res = getResources();
         String[] taskStringArray = res.getStringArray(R.array.task_array);
-        String na = getString(R.string.not_applicable);
+        String na = res.getString(R.string.not_applicable);
+
         Task taskData[] = new Task[taskStringArray.length];
+
+        tasksMap = new HashMap<String, String>();
+
+        for (String task_entry: taskStringArray){
+            // Split the string resources into key value pairs
+            String[] keyVal = task_entry.split("\\|");
+            tasksMap.put(keyVal[0], keyVal[1]);
+        }
 
         for (int i = 0; i < taskStringArray.length; i++) {
             Task t = new Task(taskStringArray[i], na, R.drawable.powered_by_google_light);
             taskData[i] = t;
         }
 
-        /**
-         * TEST DATA ARRAY: MUST BE MOVED TO STRINGS.XML W/ APPROPRIATE ID.
-         *//*
-        Task task_data[] = new Task[] {
-                new Task("Task 1", "Date Completed: N/A", R.drawable.powered_by_google_light),
-                new Task("Task 2", "Date Completed: 07/22/2015 10:59AM", R.drawable.powered_by_google_light),
-                new Task("Task 3", "Date Completed: 66/66/6666 66:66PM", R.drawable.powered_by_google_light),
-        };*/
 
         /**
          * Create instance of custom adapter and attach to ListView.
@@ -76,7 +89,8 @@ public class TaskSelectionActivity extends Activity {
         mTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                taskChosen= ((TextView)findViewById(R.id.layout_activity_title)).getText().toString();
+                //THIS LINE DOES NOT WORK AND CASUES IT TO CRASH
+                taskChosen = ((TextView)view).getText().toString();
             }
         });
 
