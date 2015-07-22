@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">GaitDetector</string>
     <string name="title_activity_username">UsernameActivity</string>
-    
+
     <string name="activity_prompt">Please select a task:</string>
     <string name="activity_start">Start Task</string>
-    <string name="action_settings">Settings</string>
+
+    
     <string name="title_activity_task_selection">TaskSelectionActivity</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_demographic">DemographicActivity</string>
