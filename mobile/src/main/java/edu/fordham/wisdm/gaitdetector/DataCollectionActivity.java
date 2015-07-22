@@ -7,11 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.Wearable;
 
 
 /**
@@ -24,7 +32,7 @@ public class DataCollectionActivity extends Activity {
     /**
      * String for tagging purposes
      */
-    private final String TAG = "DataCollectionActivity";
+    private static final String TAG = "DataCollectionActivity";
 
     /**
      * TextView to display the username
@@ -77,6 +85,21 @@ public class DataCollectionActivity extends Activity {
     private final int NOTIFICATION_ID = 0;
 
     /**
+     * String to initiate communication between phone and watch.
+     */
+    private static final String START_SAMPLING = "/start-sampling";
+
+    /**
+     * String to stop sampling on the wearable
+     */
+    private static final String STOP_SAMPLING = "/stop-sampling";
+
+    /**
+     * Enables communication between the watch and the phone
+     */
+    private GoogleApiClient mGoogleApiClient;
+
+    /**
      * Initialize the UI for the DataCollectionActivity.
      *
      * This includes TextViews for the username and task name and Buttons
@@ -96,6 +119,9 @@ public class DataCollectionActivity extends Activity {
 
         retrieveAndSetPassedData();
         setButtonClickListeners();
+        initializeGoogleApiClient();
+
+
     }
 
     /**
@@ -131,7 +157,10 @@ public class DataCollectionActivity extends Activity {
             @Override
             public void onClick(View v) {
 
+
                 if (!isMyServiceRunning(PhoneSensorService.class)) {
+                    sendMessage(START_SAMPLING);
+
                     phoneSensorServiceIntent =
                             new Intent(getApplicationContext(), PhoneSensorService.class);
 
@@ -143,6 +172,7 @@ public class DataCollectionActivity extends Activity {
 
                     createNotification();
                 }
+
             }
         });
 
@@ -154,11 +184,57 @@ public class DataCollectionActivity extends Activity {
             public void onClick(View v) {
 
                 if (isMyServiceRunning(PhoneSensorService.class)) {
+                    sendMessage(STOP_SAMPLING);
+                    
                     stopService(phoneSensorServiceIntent);
                     notificationManager.cancel(NOTIFICATION_ID);
                 }
             }
         });
+    }
+
+    private void initializeGoogleApiClient() {
+        // Build the GoogleApiClient
+        // Connect in the onResume method
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle bundle) {
+                        Log.d(TAG, "onConnected method called");
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int i) {
+                        Log.d(TAG, "Connection to wearable suspended. Code: " + i);
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult connectionResult) {
+                        Log.d(TAG, "onConnection failed: " + connectionResult);
+                    }
+                })
+                .addApi(Wearable.API)
+                .build();
+    }
+
+    /**
+     * Connect to the Wearable device in the onResume method.
+     *
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mGoogleApiClient.connect();
+    }
+
+    /**
+     * Disconnect from the Wearable device in the onDestroy method.
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mGoogleApiClient.disconnect();
     }
 
     /**
@@ -219,4 +295,38 @@ public class DataCollectionActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Send message to the wearable
+     */
+    private void sendMessage(final String message) {
+
+        if (mGoogleApiClient.isConnected()){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    NodeApi.GetConnectedNodesResult nodes =
+                            Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
+
+                    for (Node node : nodes.getNodes()) {
+
+                        MessageApi.SendMessageResult result =
+                                Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), message, null).await();
+
+                        Log.d(TAG, "Sent to node: " + node.getId() + " with display name: " + node.getDisplayName());
+
+                        if (!result.getStatus().isSuccess()) {
+                            Log.e(TAG, "ERROR: failed to send Message: " + result.getStatus());
+                        } else {
+                            Log.d(TAG, "Message Successfully sent.");
+                        }
+                    }
+                }
+            }).start();
+        } else {
+            Log.e(TAG, "Wearable not connected");
+        }
+
+    }
+
 }

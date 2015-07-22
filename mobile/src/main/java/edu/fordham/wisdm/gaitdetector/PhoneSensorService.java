@@ -164,7 +164,7 @@ public class PhoneSensorService extends Service implements SensorEventListener {
             mSensorManager.unregisterListener(this);
         }
 
-        writeAndSendFiles();
+        //writeAndSendFiles();
     }
 
     /**
