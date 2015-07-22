@@ -1,0 +1,103 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.fordham.wisdm.gaitdetector.DemographicActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/username_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textSize="30sp"
+        />
+
+    <TextView
+        android:text="Choose Gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"/>
+
+    <RadioGroup
+        android:id="@+id/radio_gender"
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male"
+            android:onClick="onRadioGenderClicked"
+            />
+
+        <RadioButton
+            android:id="@+id/radio_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female"
+            android:onClick="onRadioGenderClicked"
+            />
+
+    </RadioGroup>
+
+
+    <EditText
+        android:id="@+id/demographic_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:inputType="number"
+        android:hint="Enter age"/>
+
+    <EditText
+        android:id="@+id/demographic_height"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:inputType="number"
+        android:hint="Enter height (inches)"/>
+
+    <EditText
+        android:id="@+id/demographic_special_conditions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:inputType="text"
+        android:hint="Enter any special conditions"/>
+
+    <TextView
+        android:text="Choose Handedness"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"/>
+
+    <Spinner
+        android:id="@+id/handedness_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:prompt="@string/handedness_prompt"
+        android:entries="@array/handedness_array" >
+    </Spinner>
+
+
+    <Button
+        android:id="@+id/demographic_next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="15dp"
+        android:text="Next" />
+
+
+
+</LinearLayout>
