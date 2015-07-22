@@ -3,9 +3,15 @@ package edu.fordham.wisdm.gaitdetector;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
+import android.util.Log;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
+
+    /**
+     * String for tagging purposes
+     */
+    private final String TAG = "MainActivity";
 
     private TextView mTextView;
 
@@ -20,5 +26,6 @@ public class MainActivity extends Activity {
                 mTextView = (TextView) stub.findViewById(R.id.text);
             }
         });
+        Log.d(TAG, "MainActivity created");
     }
 }
