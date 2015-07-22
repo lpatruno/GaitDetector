@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Spinner;
 
+
 /**
  * Class that prompts user for demographic information
  * including gender, age, height, special conditions, handedness
@@ -45,32 +46,32 @@ public class DemographicActivity extends ActionBarActivity {
     /**
      * String to hold gender chosen by user
      */
-    private  String mGender;
+    private String gender = "";
 
     /**
      * String to hold age entered by user
      */
-    private String mAge;
+    private String age;
 
     /**
      * String to hold height entered by user
      */
-    private String mHeight;
+    private String height;
 
     /**
      * String to save special conditions entered by user
      */
-    private String mSpecialConditions;
+    private String specialConditions;
 
     /**
      * Spinner that defines the handedness of the user
      */
-    private Spinner mHandednessSpinner;
+    private Spinner handednessSpinner;
 
     /**
      * String to hold the handedness selected by user
      */
-    private String mHandedness;
+    private String handedness;
 
 
     /**
@@ -96,7 +97,7 @@ public class DemographicActivity extends ActionBarActivity {
         mUsernameTextView.setText(mUsernameString);
 
         mNextButton= (Button)findViewById(R.id.demographic_next_button);
-        mHandednessSpinner= (Spinner)findViewById(R.id.handedness_spinner);
+        handednessSpinner= (Spinner)findViewById(R.id.handedness_spinner);
 
 
         /**
@@ -111,32 +112,42 @@ public class DemographicActivity extends ActionBarActivity {
             public void onClick(View v) {
 
                 //get information entered by user and save in member variables
-                mAge = ((EditText)findViewById(R.id.demographic_age)).getText().toString();
-                mHeight = ((EditText)findViewById(R.id.demographic_height)).getText().toString();
-                mSpecialConditions = ((EditText)findViewById(R.id.demographic_special_conditions)).getText().toString();
-                mHandedness= mHandednessSpinner.getSelectedItem().toString();
+                age = ((EditText)findViewById(R.id.demographic_age)).getText().toString();
+                height = ((EditText)findViewById(R.id.demographic_height)).getText().toString();
+                specialConditions = ((EditText)findViewById(R.id.demographic_special_conditions)).getText().toString();
+                handedness= handednessSpinner.getSelectedItem().toString();
 
-                Toast.makeText(getApplicationContext(), "Gender: "+mGender+" Age: "+mAge+" Height: "+mHeight+
-                        "Handedness: "+ mHandedness ,Toast.LENGTH_SHORT).show();
+                if(!gender.equals("") && !age.equals("") && !height.equals("") ) {
+                    Toast.makeText(getApplicationContext(), "Gender: " + gender + " Age: " + age + " Height: " + height +
+                            " Special Conditions: " + specialConditions + " Handedness: " + handedness, Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Please answer all fields", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
 
     }
 
-
+    /**
+     * Wait for user to chose radio button option
+     * on click, set the gender variable accordingly.
+     *
+     * @param view
+     */
     public void onRadioGenderClicked(View view){
         //is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
         //check which radio button was clicked
         switch(view.getId()) {
-            case R.id.radioFemale:
-                mGender= "Female";
+            case R.id.radio_female:
+                gender= "Female";
                 break;
 
-            case R.id.radioMale:
-                mGender= "Male";
+            case R.id.radio_male:
+                gender= "Male";
                 break;
         }
     }
