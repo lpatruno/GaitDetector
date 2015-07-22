@@ -4,18 +4,33 @@ package edu.fordham.wisdm.gaitdetector;
  * Class of task objects containing title, date completed and completion icon.
  */
 public class Task {
-    public int completionIcon;
-    public String activityTitle;
+
+    /**
+     * Name of task.
+     */
+    public String taskTitle;
+
+    /**
+     * Date & time of completion. If incomplete, N/A.
+     */
     public String completionDate;
 
-    public Task(){
+    /**
+     * Completion icon - check or X.
+     */
+    public int completionIcon;
+
+    /**
+     * Constructors.
+     */
+    public Task() {
         super();
     }
 
-    public Task (int completionIcon, String activityTitle, String completionDate){
+    public Task(String taskTitle, String completionDate, int completionIcon) {
         super();
-        this.completionIcon = completionIcon;
-        this.activityTitle = activityTitle;
+        this.taskTitle = taskTitle;
         this.completionDate = completionDate;
+        this.completionIcon = completionIcon;
     }
 }

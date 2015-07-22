@@ -6,7 +6,7 @@
     android:layout_height="?android:attr/listPreferredItemHeight">
 
     <ImageView
-        android:id="@+id/completion_icon"
+        android:id="@+id/layout_completion_icon"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
@@ -16,23 +16,21 @@
         />
 
     <TextView
-        android:id="@+id/activity_title"
+        android:id="@+id/layout_activity_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/completion_icon"
-        android:text="Example application"
+        android:layout_toRightOf="@id/layout_completion_icon"
         android:textSize="16sp"
         />
 
     <TextView
-        android:id="@+id/completion_date"
+        android:id="@+id/layout_completion_date"
         android:layout_width="fill_parent"
         android:layout_height="25dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/completion_icon"
-        android:text="Description"
+        android:layout_toRightOf="@id/layout_completion_icon"
         android:textSize="12sp"/>
 </RelativeLayout>
