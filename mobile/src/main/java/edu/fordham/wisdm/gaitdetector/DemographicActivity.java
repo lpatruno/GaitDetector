@@ -118,8 +118,12 @@ public class DemographicActivity extends ActionBarActivity {
                 handedness= handednessSpinner.getSelectedItem().toString();
 
                 if(!gender.equals("") && !age.equals("") && !height.equals("") ) {
-                    Toast.makeText(getApplicationContext(), "Gender: " + gender + " Age: " + age + " Height: " + height +
-                            " Special Conditions: " + specialConditions + " Handedness: " + handedness, Toast.LENGTH_SHORT).show();
+
+                    //Toast.makeText(getApplicationContext(), "Gender: " + gender + " Age: " + age + " Height: " + height +" Special Conditions: " + specialConditions + " Handedness: " + handedness, Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(DemographicActivity.this, TaskSelectionActivity.class);
+                    i.putExtra("username", mUsernameString);
+                    startActivity(i);
+
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Please answer all fields", Toast.LENGTH_SHORT).show();

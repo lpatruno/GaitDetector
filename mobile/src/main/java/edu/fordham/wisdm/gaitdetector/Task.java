@@ -8,7 +8,7 @@ public class Task {
     /**
      * Name of task.
      */
-    public String taskTitle;
+    public String taskID;
 
     /**
      * Date & time of completion. If incomplete, N/A.
@@ -27,9 +27,9 @@ public class Task {
         super();
     }
 
-    public Task(String taskTitle, String completionDate, int completionIcon) {
+    public Task(String taskID, String completionDate, int completionIcon) {
         super();
-        this.taskTitle = taskTitle;
+        this.taskID = taskID;
         this.completionDate = completionDate;
         this.completionIcon = completionIcon;
     }

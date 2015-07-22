@@ -16,4 +16,12 @@
         <item>Right</item>
         <item>Both</item>
     </string-array>
+
+    <string-array name="task_array">
+        <item name="BBS1">Turn 360 </item>
+        <item name="BBS2">Sit Unsupported</item>
+        <item name="BBS3">Stand Unsupported</item>
+    </string-array>
+    <string name="not_applicable">N/A</string>
+
 </resources>
