@@ -14,8 +14,25 @@ import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.wearable.Asset;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.Wearable;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity implements SensorEventListener {
@@ -46,9 +63,19 @@ public class MainActivity extends Activity implements SensorEventListener {
     private TextView mTextView;
 
     /**
+     * Button to stop sampling the device sensors
+     */
+    private Button mStopBtn;
+
+    /**
      * Broadcast receiver to update the UI when the ListenerService receives messages from the phone
      */
     private BroadcastReceiver mMessageReceiver;
+
+    /**
+     * Enables communication between the watch and the phone
+     */
+    private GoogleApiClient mGoogleApiClient;
 
     /**
      * The sampling rate in microseconds to collect acceleration records at (this is 20Hz)
@@ -101,6 +128,14 @@ public class MainActivity extends Activity implements SensorEventListener {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
                 mTextView = (TextView) stub.findViewById(R.id.message);
+                mStopBtn = (Button) stub.findViewById(R.id.stop_btn);
+
+                mStopBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        unregisterSensors();
+                    }
+                });
             }
         });
 
@@ -118,8 +153,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                 } else if (message.equals(STOP_SAMPLING)){
                     mTextView.setText("Sampling completed");
 
-                    // Stop sampling sensors
-                    unregisterSensors();
+                    finalizeDataCollection();
                 }
             }
         };
@@ -128,15 +162,55 @@ public class MainActivity extends Activity implements SensorEventListener {
         LocalBroadcastManager
                 .getInstance(this)
                 .registerReceiver(mMessageReceiver, new IntentFilter(LISTENER_INTENT));
+
+        initializeGoogleApiClient();
     }
 
+    /**
+     * Initialize the GoogleApiClient in order to connect to the phone.
+     *
+     */
+    private void initializeGoogleApiClient() {
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle bundle) {
+                        Log.d(TAG, "onConnected method called");
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int i) {
+                        Log.d(TAG, "Connection to wearable suspended. Code: " + i);
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult connectionResult) {
+                        Log.d(TAG, "onConnection failed: " + connectionResult);
+                    }
+                })
+                .addApi(Wearable.API)
+                .build();
+    }
+
+    /**
+     * Connect to the Wearable device in the onResume method.
+     *
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mGoogleApiClient.connect();
+    }
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         // Unregister since the activity is about to be closed.
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         unregisterSensors();
-        super.onDestroy();
+        mGoogleApiClient.disconnect();
     }
 
     /**
@@ -167,12 +241,30 @@ public class MainActivity extends Activity implements SensorEventListener {
         mSensorManager.registerListener(this, mAccelerometer, SAMPLE_RATE);
         mSensorManager.registerListener(this, mGyroscope, SAMPLE_RATE);
 
+        mStopBtn.setVisibility(View.VISIBLE);
+
+    }
+
+    /**
+     * This method is called when the stop message is received either from the
+     * button on the wearable UI or from the phone.
+     * We unregister the sensors and then send the sensor data to the phone
+     */
+    private void finalizeDataCollection() {
+
+        // Stop sampling sensors
+        unregisterSensors();
+
+        // Send data to the phone
+        sendData();
     }
 
     /**
      * Unregister the sensors and stop sampling.
      */
     private void unregisterSensors() {
+
+        mStopBtn.setVisibility(View.GONE);
 
         if (wakeLock != null) {
             if (wakeLock.isHeld()) {
@@ -218,4 +310,55 @@ public class MainActivity extends Activity implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+
+    /**
+     * Send sensor data to the phone.
+     */
+    private void sendData() {
+
+        if (mGoogleApiClient.isConnected()){
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    try{
+                        // Initialize sensor dataMap for transfer
+                        PutDataMapRequest dataMap = PutDataMapRequest.create("/sensor-data");
+
+                        // Convert accel records to byte array
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ObjectOutputStream oos = new ObjectOutputStream(baos);
+
+                        oos.writeObject(accelerationRecords);
+                        oos.flush();
+                        oos.close();
+
+                        byte[] accelByte = baos.toByteArray();
+
+
+                        // Create Asset from accel records
+                        Asset accelerometerData = Asset.createFromBytes(accelByte);
+
+                        // Append the accel records Asset
+                        dataMap.getDataMap().putAsset("accelerometerData", accelerometerData);
+
+                        PutDataRequest request = dataMap.asPutDataRequest();
+                        PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi
+                                .putDataItem(mGoogleApiClient, request);
+
+
+                    } catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        } else {
+            Log.e(TAG, "Wearable not connected");
+        }
+
+    }
+
 }
