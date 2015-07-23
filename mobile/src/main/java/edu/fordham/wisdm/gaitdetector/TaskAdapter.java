@@ -64,7 +64,7 @@ public class TaskAdapter extends ArrayAdapter<Task>{
              */
             holder = new TaskHolder();
             holder.completionIcon = (ImageView)row.findViewById(R.id.layout_completion_icon);
-            holder.taskID = (TextView)row.findViewById(R.id.layout_activity_title);
+            holder.taskTitle = (TextView)row.findViewById(R.id.layout_task_id);
             holder.completionDate = (TextView)row.findViewById(R.id.layout_completion_date);
 
             row.setTag(holder);
@@ -75,7 +75,7 @@ public class TaskAdapter extends ArrayAdapter<Task>{
         }
 
         Task task = data[position];
-        holder.taskID.setText(task.taskID);
+        holder.taskTitle.setText(task.taskTitle);
         holder.completionDate.setText(task.completionDate);
         holder.completionIcon.setImageResource(task.completionIcon);
 
@@ -87,7 +87,7 @@ public class TaskAdapter extends ArrayAdapter<Task>{
      * the TextView & ImageView.
      */
     static class TaskHolder {
-        TextView taskID;
+        TextView taskTitle;
         TextView completionDate;
         ImageView completionIcon;
     }

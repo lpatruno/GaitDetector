@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="@string/activity_prompt"
-        android:textSize="20sp"/>
+        android:textSize="23sp"/>
 
     <ListView
         android:id="@+id/taskselection_tasklist"
@@ -23,6 +23,9 @@
         android:id="@+id/taskselection_startbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="15dp"
         android:text="@string/activity_start"/>
 
 </LinearLayout>

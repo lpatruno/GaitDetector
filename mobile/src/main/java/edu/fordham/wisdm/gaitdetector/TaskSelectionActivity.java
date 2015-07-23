@@ -2,7 +2,6 @@ package edu.fordham.wisdm.gaitdetector;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -10,10 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.content.res.Resources;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.content.Intent;
 import java.util.HashMap;
 
 /**
@@ -38,75 +36,100 @@ public class TaskSelectionActivity extends Activity {
     private ListView mTaskListView;
 
     /**
-     * String to hold the task chosen by the user
+     * String to hold the task chosen by the user.
      */
-    private String taskChosen;
+    private String taskChosen = "";
+
+    /**
+     * String to hold username.
+     */
+    private String username;
 
     /**
      * Hashmap containing the BBS task numbers and labels
      */
     private HashMap<String, String> tasksMap;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_selection);
 
+        mStartButton = (Button)findViewById(R.id.taskselection_startbutton);
+
+        /**
+         * Get user name from previous activity.
+         */
+        Intent intent = getIntent();
+        username = intent.getExtras().getString("username");
+
+        /**
+         * Get string resources.
+         */
         Resources res = getResources();
         String[] taskStringArray = res.getStringArray(R.array.task_array);
-        String na = res.getString(R.string.not_applicable);
+        String notApplicable = res.getString(R.string.not_applicable);
 
+        /**
+         * Initialize and fill hashmap (task id & title) and array with tasks.
+         */
+        tasksMap = new HashMap<String, String>();
         Task taskData[] = new Task[taskStringArray.length];
 
-        tasksMap = new HashMap<String, String>();
-
-        for (String task_entry: taskStringArray){
-            // Split the string resources into key value pairs
-            String[] keyVal = task_entry.split("\\|");
-            tasksMap.put(keyVal[0], keyVal[1]);
-        }
-
         for (int i = 0; i < taskStringArray.length; i++) {
-            Task t = new Task(taskStringArray[i], na, R.drawable.powered_by_google_light);
+            // Split the string resources into key value pairs
+            String task = taskStringArray[i];
+            String[] keyVal = task.split("\\|");
+
+            // Fill task hashmap
+            tasksMap.put(keyVal[0], keyVal[1]);
+
+            // Fill task array
+            Task t = new Task(tasksMap.get(keyVal[0]), notApplicable,
+                    R.drawable.ic_incomplete);
             taskData[i] = t;
         }
 
-
         /**
-         * Create instance of custom adapter and attach to ListView.
+         * Create custom adapter and attach array of Task items to ListView.
          */
         TaskAdapter adapter = new TaskAdapter(this, R.layout.activity_list_layout, taskData);
         mTaskListView = (ListView)findViewById(R.id.taskselection_tasklist);
         mTaskListView.setAdapter(adapter);
 
-        mStartButton = (Button)findViewById(R.id.taskselection_startbutton);
-
         /**
-         * method that waits for user to chose a task.
+         * Method that waits for user to chose a task.
          * Upon task selection, taskChosen is updated.
          */
         mTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //THIS LINE DOES NOT WORK AND CASUES IT TO CRASH
-                taskChosen = ((TextView)view).getText().toString();
+                // Cast RelativeLayout to TextView
+                TextView tv = ((TextView) view.findViewById(R.id.layout_task_id));
+
+                // Get task title from Task object
+                taskChosen = tv.getText().toString();
             }
         });
 
-
         /**
-         * method to wait for user to click next button.
+         * Method to wait for user to click next button.
          */
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), taskChosen, Toast.LENGTH_SHORT).show();
+                if (!taskChosen.equals("")) {
+                    Toast.makeText(getApplicationContext(), taskChosen, Toast.LENGTH_SHORT).show();
+//                    Intent i = new Intent(TaskSelectionActivity.this, DataCollectionActivity.class);
+//                    i.putExtra("TASK", taskChosen);
+//                    i.putExtra("username", username);
+//                    startActivity(i);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), R.string.no_task_chosen, Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
-
-
     }
 
     @Override
@@ -127,7 +150,6 @@ public class TaskSelectionActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

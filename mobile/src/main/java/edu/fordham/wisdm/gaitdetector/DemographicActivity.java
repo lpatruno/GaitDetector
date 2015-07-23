@@ -34,14 +34,14 @@ public class DemographicActivity extends ActionBarActivity {
     private Button mNextButton;
 
     /**
-     * String to hold username
-     */
-    private String mUsernameString;
-
-    /**
      * TextView to display username
      */
     private TextView mUsernameTextView;
+
+    /**
+     * String to hold username
+     */
+    private String usernameString;
 
     /**
      * String to hold gender chosen by user
@@ -92,9 +92,9 @@ public class DemographicActivity extends ActionBarActivity {
          * Extract username string from intent and display on screen
          */
         Intent intent = getIntent();
-        mUsernameString = intent.getExtras().getString("username").toUpperCase();
+        usernameString = intent.getExtras().getString("username").toUpperCase();
         mUsernameTextView = (TextView)findViewById(R.id.username_textview);
-        mUsernameTextView.setText(mUsernameString);
+        mUsernameTextView.setText(usernameString);
 
         mNextButton= (Button)findViewById(R.id.demographic_next_button);
         handednessSpinner= (Spinner)findViewById(R.id.handedness_spinner);
@@ -121,12 +121,12 @@ public class DemographicActivity extends ActionBarActivity {
 
                     //Toast.makeText(getApplicationContext(), "Gender: " + gender + " Age: " + age + " Height: " + height +" Special Conditions: " + specialConditions + " Handedness: " + handedness, Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(DemographicActivity.this, TaskSelectionActivity.class);
-                    i.putExtra("username", mUsernameString);
+                    i.putExtra("username", usernameString);
                     startActivity(i);
 
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Please answer all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.incomplete_fields, Toast.LENGTH_SHORT).show();
                 }
 
             }

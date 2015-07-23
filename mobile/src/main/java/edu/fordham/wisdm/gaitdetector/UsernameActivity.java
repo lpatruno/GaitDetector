@@ -25,7 +25,6 @@ public class UsernameActivity extends Activity {
      */
     private final String TAG = "UsernameActivity";
 
-
     /**
      * Button to begin next activity
      */
@@ -39,9 +38,7 @@ public class UsernameActivity extends Activity {
     /**
      * String to hold all lower case version of username with ' ' replaced with '_'
      */
-    private String mUsernameString;
-
-
+    private String usernameString;
 
     /**
      * method to load the UI elements
@@ -72,26 +69,23 @@ public class UsernameActivity extends Activity {
             public void onClick(View v) {
 
                 // convert the user input to a string
-                mUsernameString = mUsernameText.getText().toString();
+                usernameString = mUsernameText.getText().toString();
 
-                if (!mUsernameString.equals("")) {
-                    //Toast.makeText(getApplicationContext(), "Name: " + mUsernameString, Toast.LENGTH_SHORT).show();
+                if (!usernameString.equals("")) {
+                    //Toast.makeText(getApplicationContext(), "Name: " + usernameString, Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(UsernameActivity.this, DemographicActivity.class);
-                    i.putExtra("username", mUsernameString);
+                    i.putExtra("username", usernameString);
                     startActivity(i);
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "Please enter valid username", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.invalid_username, Toast.LENGTH_SHORT).show();
                 }
-
             }
 
         });
 
 
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

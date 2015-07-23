@@ -8,7 +8,7 @@ public class Task {
     /**
      * Name of task.
      */
-    public String taskID;
+    public String taskTitle;
 
     /**
      * Date & time of completion. If incomplete, N/A.
@@ -27,19 +27,19 @@ public class Task {
         super();
     }
 
-    public Task(String taskID, String completionDate, int completionIcon) {
+    public Task(String taskTitle, String completionDate, int completionIcon) {
         super();
-        this.taskID = taskID;
+        this.taskTitle = taskTitle;
         this.completionDate = completionDate;
         this.completionIcon = completionIcon;
     }
 
     /**
-     * toString Override to access the taskID
+     * toString Override to access the taskTitle
      * @return
      */
     @Override
     public String toString(){
-        return this.taskID;
+        return this.taskTitle;
     }
 }
