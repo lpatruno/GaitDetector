@@ -38,21 +38,23 @@ public class ListenerService extends WearableListenerService {
     private static final String LISTENER_INTENT = "listener_intent";
 
 
+    /**
+     * Callback method when wearable receives a message from the phone.
+     *
+     * If START_SAMPLING, start sampling the wearable sensors
+     * IF STOP_SAMPLING, stop sampling the wearable sensors and send the data to the phone
+     *
+     * @param messageEvent
+     */
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         super.onMessageReceived(messageEvent);
 
         if (messageEvent.getPath().equals(START_SAMPLING)) {
-            Log.d(TAG, "Message received from phone for path " + messageEvent.getPath());
 
             // Send a message to the UI
             sendUiMessage(START_SAMPLING);
 
-            /*
-            Intent i = new Intent(getBaseContext(), WearTrainingActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getApplication().startActivity(i);
-            */
         } else if (messageEvent.getPath().equals(STOP_SAMPLING)) {
             // Send a message to the UI
             sendUiMessage(STOP_SAMPLING);
@@ -68,4 +70,6 @@ public class ListenerService extends WearableListenerService {
         intent.putExtra("message", message);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
+
 }

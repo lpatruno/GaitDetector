@@ -85,6 +85,11 @@ public class DataCollectionActivity extends Activity {
     private final int NOTIFICATION_ID = 0;
 
     /**
+     * Enables communication between the watch and the phone
+     */
+    private GoogleApiClient mGoogleApiClient;
+
+    /**
      * String to initiate communication between phone and watch.
      */
     private static final String START_SAMPLING = "/start-sampling";
@@ -94,10 +99,6 @@ public class DataCollectionActivity extends Activity {
      */
     private static final String STOP_SAMPLING = "/stop-sampling";
 
-    /**
-     * Enables communication between the watch and the phone
-     */
-    private GoogleApiClient mGoogleApiClient;
 
     /**
      * Initialize the UI for the DataCollectionActivity.
@@ -120,7 +121,6 @@ public class DataCollectionActivity extends Activity {
         retrieveAndSetPassedData();
         setButtonClickListeners();
         initializeGoogleApiClient();
-
 
     }
 
@@ -157,19 +157,19 @@ public class DataCollectionActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-
                 if (!isMyServiceRunning(PhoneSensorService.class)) {
+
+                    // Send message to the wearable to start sampling
                     sendMessage(START_SAMPLING);
 
+                    // Create intent to start sampling service
                     phoneSensorServiceIntent =
                             new Intent(getApplicationContext(), PhoneSensorService.class);
-
-                    // Pass this data for file labeling purposes
                     phoneSensorServiceIntent.putExtra("USERNAME", username);
                     phoneSensorServiceIntent.putExtra("TASK", task);
 
+                    // Start the service and create a notification
                     startService(phoneSensorServiceIntent);
-
                     createNotification();
                 }
 
@@ -184,8 +184,11 @@ public class DataCollectionActivity extends Activity {
             public void onClick(View v) {
 
                 if (isMyServiceRunning(PhoneSensorService.class)) {
+
+                    // Send message to the wearable to stop sampling
                     sendMessage(STOP_SAMPLING);
-                    
+
+                    // Stop the sampling service and cancel the notification
                     stopService(phoneSensorServiceIntent);
                     notificationManager.cancel(NOTIFICATION_ID);
                 }
@@ -193,9 +196,12 @@ public class DataCollectionActivity extends Activity {
         });
     }
 
+    /**
+     * Initialize the GoogleApiClient in order to connect to the wearable device.
+     *
+     */
     private void initializeGoogleApiClient() {
-        // Build the GoogleApiClient
-        // Connect in the onResume method
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
