@@ -39,6 +39,11 @@ public class DemographicActivity extends ActionBarActivity {
     private TextView mUsernameTextView;
 
     /**
+     * Object that holds individual user information.
+     */
+    private User user;
+
+    /**
      * String to hold username
      */
     private String usernameString;
@@ -73,7 +78,6 @@ public class DemographicActivity extends ActionBarActivity {
      */
     private String handedness;
 
-
     /**
      * method to load the UI elements
      *
@@ -87,18 +91,17 @@ public class DemographicActivity extends ActionBarActivity {
 
         Log.d(TAG, "onCreate method called");
 
-
         /**
-         * Extract username string from intent and display on screen
+         * Get user from intent and display on screen
          */
         Intent intent = getIntent();
-        usernameString = intent.getExtras().getString("username").toUpperCase();
+        user = (User)intent.getParcelableExtra("USER");
+        usernameString = user.getName().toUpperCase();
         mUsernameTextView = (TextView)findViewById(R.id.username_textview);
         mUsernameTextView.setText(usernameString);
 
         mNextButton= (Button)findViewById(R.id.demographic_next_button);
         handednessSpinner= (Spinner)findViewById(R.id.handedness_spinner);
-
 
         /**
          * method that waits for the user to click next button
@@ -119,19 +122,19 @@ public class DemographicActivity extends ActionBarActivity {
 
                 if(!gender.equals("") && !age.equals("") && !height.equals("") ) {
 
-                    //Toast.makeText(getApplicationContext(), "Gender: " + gender + " Age: " + age + " Height: " + height +" Special Conditions: " + specialConditions + " Handedness: " + handedness, Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(DemographicActivity.this, TaskSelectionActivity.class);
-                    i.putExtra("username", usernameString);
-                    startActivity(i);
+                    // set User object attributes
+                    user.setAttributes(gender, height, specialConditions, handedness);
 
+                    Intent i = new Intent(DemographicActivity.this, TaskSelectionActivity.class);
+                    i.putExtra("USER", user);
+                    startActivity(i);
                 }
+
                 else{
                     Toast.makeText(getApplicationContext(), R.string.incomplete_fields, Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
-
     }
 
     /**
@@ -155,8 +158,6 @@ public class DemographicActivity extends ActionBarActivity {
                 break;
         }
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

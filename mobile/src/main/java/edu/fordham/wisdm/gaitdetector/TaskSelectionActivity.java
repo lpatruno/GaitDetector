@@ -36,14 +36,14 @@ public class TaskSelectionActivity extends Activity {
     private ListView mTaskListView;
 
     /**
+     * Object that holds user information.
+     */
+    private User user;
+
+    /**
      * String to hold the task chosen by the user.
      */
     private String taskChosen = "";
-
-    /**
-     * String to hold username.
-     */
-    private String username;
 
     /**
      * Hashmap containing the BBS task numbers and labels
@@ -58,10 +58,10 @@ public class TaskSelectionActivity extends Activity {
         mStartButton = (Button)findViewById(R.id.taskselection_startbutton);
 
         /**
-         * Get user name from previous activity.
+         * Get user info from previous activity.
          */
         Intent intent = getIntent();
-        username = intent.getExtras().getString("username");
+        final User user = (User)intent.getParcelableExtra("USER");
 
         /**
          * Get string resources.
@@ -120,10 +120,10 @@ public class TaskSelectionActivity extends Activity {
             public void onClick(View v) {
                 if (!taskChosen.equals("")) {
                     Toast.makeText(getApplicationContext(), taskChosen, Toast.LENGTH_SHORT).show();
-//                    Intent i = new Intent(TaskSelectionActivity.this, DataCollectionActivity.class);
-//                    i.putExtra("TASK", taskChosen);
-//                    i.putExtra("username", username);
-//                    startActivity(i);
+//                  Intent i = new Intent(TaskSelectionActivity.this, DataCollectionActivity.class);
+//                  i.putExtra("TASK", taskChosen);
+//                  i.putExtra("USER", user);
+//                  startActivity(i);
                 }
                 else {
                     Toast.makeText(getApplicationContext(), R.string.no_task_chosen, Toast.LENGTH_SHORT).show();

@@ -36,6 +36,11 @@ public class UsernameActivity extends Activity {
     private EditText mUsernameText;
 
     /**
+     * Object that holds individual user information.
+     */
+    private User user;
+
+    /**
      * String to hold all lower case version of username with ' ' replaced with '_'
      */
     private String usernameString;
@@ -72,9 +77,9 @@ public class UsernameActivity extends Activity {
                 usernameString = mUsernameText.getText().toString();
 
                 if (!usernameString.equals("")) {
-                    //Toast.makeText(getApplicationContext(), "Name: " + usernameString, Toast.LENGTH_SHORT).show();
+                    user = new User(usernameString);
                     Intent i = new Intent(UsernameActivity.this, DemographicActivity.class);
-                    i.putExtra("username", usernameString);
+                    i.putExtra("USER", user);
                     startActivity(i);
 
                 } else {
