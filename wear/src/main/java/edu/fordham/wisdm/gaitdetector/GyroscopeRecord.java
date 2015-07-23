@@ -1,7 +1,7 @@
 package edu.fordham.wisdm.gaitdetector;
 
 /**
- * Class to hold acceleration records
+ * Class to hold gyroscope records
  *
  * @author Luigi Patruno
  */

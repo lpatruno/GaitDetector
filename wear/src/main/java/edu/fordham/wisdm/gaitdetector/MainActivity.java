@@ -16,6 +16,8 @@ import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends Activity implements SensorEventListener {
 
     /**
@@ -79,6 +81,17 @@ public class MainActivity extends Activity implements SensorEventListener {
      */
     private PowerManager.WakeLock wakeLock = null;
 
+    /**
+     * The list of acceleration records
+     */
+    private ArrayList<AccelerationRecord> accelerationRecords;
+
+    /**
+     * The list of gyroscope records
+     */
+    private ArrayList<GyroscopeRecord> gyroscopeRecords;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +145,9 @@ public class MainActivity extends Activity implements SensorEventListener {
      */
     private void registerSensorListeners(){
 
+        accelerationRecords = new ArrayList<AccelerationRecord>();
+        gyroscopeRecords = new ArrayList<GyroscopeRecord>();
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         // Get the accelerometer and gyroscope sensors if they exist
@@ -184,12 +200,10 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         switch(event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
-                //accelerationRecords.add(new AccelerationRecord(ts, x, y, z));
-                Log.d(TAG, "Accel:\tts:" + ts + "x: " + x);
+                accelerationRecords.add(new AccelerationRecord(ts, x, y, z));
                 break;
             case Sensor.TYPE_GYROSCOPE:
-                //gyroscopeRecords.add(new GyroscopeRecord(ts, x, y, z));
-                Log.d(TAG, "Gyro:\tts:" + ts + "x: " + x);
+                gyroscopeRecords.add(new GyroscopeRecord(ts, x, y, z));
                 break;
         }
 
