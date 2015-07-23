@@ -24,6 +24,7 @@
         <item>BBS3|Stand Unsupported</item>
     </string-array>
     <string name="not_applicable">Date Completed: N/A</string>
+    <string name="date_completed">Date completed:\t</string>
     <string name="no_task_chosen">Please choose a task</string>
     <string name="activity_prompt">Please select a task:</string>
     <string name="activity_start">Start Task</string>

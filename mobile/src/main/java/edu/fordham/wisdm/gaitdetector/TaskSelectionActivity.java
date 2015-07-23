@@ -7,12 +7,16 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.content.res.Resources;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
+
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Calendar;
 
 /**
  * Class to select specific activity to start. Gives task title, completion status through an icon,
@@ -46,9 +50,14 @@ public class TaskSelectionActivity extends Activity {
     private String taskChosen = "";
 
     /**
-     * Hashmap containing the BBS task numbers and labels
+     * Hashmap containing the BBS task numbers and labels.
      */
     private HashMap<String, String> tasksMap;
+
+    /**
+     * View for purpose of changing icons.
+     */
+    private View positionOfItemSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +106,8 @@ public class TaskSelectionActivity extends Activity {
         mTaskListView = (ListView)findViewById(R.id.taskselection_tasklist);
         mTaskListView.setAdapter(adapter);
 
+
+
         /**
          * Method that waits for user to chose a task.
          * Upon task selection, taskChosen is updated.
@@ -106,6 +117,7 @@ public class TaskSelectionActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Cast RelativeLayout to TextView
                 TextView tv = ((TextView) view.findViewById(R.id.layout_task_id));
+                positionOfItemSelected = view;
 
                 // Get task title from Task object
                 taskChosen = tv.getText().toString();
@@ -119,7 +131,19 @@ public class TaskSelectionActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (!taskChosen.equals("")) {
+                    // Testing purposes - comment out when using intent.
                     Toast.makeText(getApplicationContext(), taskChosen, Toast.LENGTH_SHORT).show();
+
+                    ImageView iv = ((ImageView) positionOfItemSelected.findViewById(R.id.layout_completion_icon));
+                    iv.setImageResource(R.drawable.ic_complete);
+
+                    // Format and set completion date
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String currentDate = sdFormat.format(c.getTime());
+                    TextView tv = ((TextView) positionOfItemSelected.findViewById(R.id.layout_completion_date));
+                    tv.setText(getString(R.string.date_completed) + currentDate);
+
 //                  Intent i = new Intent(TaskSelectionActivity.this, DataCollectionActivity.class);
 //                  i.putExtra("TASK", taskChosen);
 //                  i.putExtra("USER", user);

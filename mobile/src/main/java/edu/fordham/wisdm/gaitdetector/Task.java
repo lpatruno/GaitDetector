@@ -23,12 +23,7 @@ public class Task {
     /**
      * Constructors.
      */
-    public Task() {
-        super();
-    }
-
     public Task(String taskTitle, String completionDate, int completionIcon) {
-        super();
         this.taskTitle = taskTitle;
         this.completionDate = completionDate;
         this.completionIcon = completionIcon;
