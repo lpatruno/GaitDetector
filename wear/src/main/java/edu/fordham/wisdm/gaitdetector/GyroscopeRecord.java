@@ -1,11 +1,14 @@
 package edu.fordham.wisdm.gaitdetector;
 
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 /**
- * Class to hold gyroscope records
+ * Class to hold acceleration records
  *
  * @author Luigi Patruno
  */
-public class GyroscopeRecord {
+public class GyroscopeRecord implements Serializable{
 
     /**
      * The timestamp of when the record
@@ -30,6 +33,19 @@ public class GyroscopeRecord {
      */
     private float z;
 
+    static final long serialVersionUID = 2409678382753934076L;
+
+    /**
+     * Used for serialization of the class
+     * @param outputStream the output stream to write to
+     */
+    private void writeObject(ObjectOutputStream outputStream) {
+        try {
+            outputStream.defaultWriteObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Constructor to initialize acceleration records.

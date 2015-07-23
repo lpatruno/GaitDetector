@@ -6,7 +6,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.wearable.MessageEvent;
-import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.WearableListenerService;
 
 /**
@@ -51,7 +50,6 @@ public class ListenerService extends WearableListenerService {
         super.onMessageReceived(messageEvent);
 
         if (messageEvent.getPath().equals(START_SAMPLING)) {
-
             // Send a message to the UI
             sendUiMessage(START_SAMPLING);
 

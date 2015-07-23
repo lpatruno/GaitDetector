@@ -317,6 +317,9 @@ public class MainActivity extends Activity implements SensorEventListener {
      */
     private void sendData() {
 
+        Log.d(TAG, "Accel records: " + accelerationRecords.size());
+        Log.d(TAG, "Gyro records: " + gyroscopeRecords.size());
+
         if (mGoogleApiClient.isConnected()){
 
             new Thread(new Runnable() {
@@ -331,24 +334,32 @@ public class MainActivity extends Activity implements SensorEventListener {
                         // Convert accel records to byte array
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         ObjectOutputStream oos = new ObjectOutputStream(baos);
-
                         oos.writeObject(accelerationRecords);
                         oos.flush();
                         oos.close();
+                        byte[] accelerationByteArray = baos.toByteArray();
 
-                        byte[] accelByte = baos.toByteArray();
+                        // Convert accel records to byte array
+                        baos = new ByteArrayOutputStream();
+                        oos = new ObjectOutputStream(baos);
+                        oos.writeObject(gyroscopeRecords);
+                        oos.flush();
+                        oos.close();
+                        byte[] gyroscopeByteArray = baos.toByteArray();
 
 
-                        // Create Asset from accel records
-                        Asset accelerometerData = Asset.createFromBytes(accelByte);
+                        // Create Asset for accelerometer and gyroscope data
+                        Asset accelerometerAsset = Asset.createFromBytes(accelerationByteArray);
+                        Asset gyroscopeAsset = Asset.createFromBytes(gyroscopeByteArray);
 
-                        // Append the accel records Asset
-                        dataMap.getDataMap().putAsset("accelerometerData", accelerometerData);
+                        // Append the accelerometer and gyroscope Assets
+                        dataMap.getDataMap().putAsset("accelerometerAsset", accelerometerAsset);
+                        dataMap.getDataMap().putAsset("gyroscopeAsset", gyroscopeAsset);
 
+                        // Send the data
                         PutDataRequest request = dataMap.asPutDataRequest();
                         PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi
                                 .putDataItem(mGoogleApiClient, request);
-
 
                     } catch (IOException e){
                         e.printStackTrace();
