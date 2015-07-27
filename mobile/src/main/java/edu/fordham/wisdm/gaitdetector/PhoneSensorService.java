@@ -68,12 +68,12 @@ public class PhoneSensorService extends Service implements SensorEventListener {
     /**
      * The list of acceleration records
      */
-    private ArrayList<AccelerationRecord> accelerationRecords = new ArrayList<AccelerationRecord>();
+    private ArrayList<ThreeTupleRecord> accelerationRecords = new ArrayList<ThreeTupleRecord>();
 
     /**
      * The list of gyroscope records
      */
-    private ArrayList<GyroscopeRecord> gyroscopeRecords = new ArrayList<GyroscopeRecord>();
+    private ArrayList<ThreeTupleRecord> gyroscopeRecords = new ArrayList<ThreeTupleRecord>();
 
     /**
      * Start command for the phone sensor service.
@@ -139,10 +139,10 @@ public class PhoneSensorService extends Service implements SensorEventListener {
 
         switch(event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
-                accelerationRecords.add(new AccelerationRecord(ts, x, y, z));
+                accelerationRecords.add(new ThreeTupleRecord(ts, x, y, z));
                 break;
             case Sensor.TYPE_GYROSCOPE:
-                gyroscopeRecords.add(new GyroscopeRecord(ts, x, y, z));
+                gyroscopeRecords.add(new ThreeTupleRecord(ts, x, y, z));
                 break;
         }
 
@@ -164,7 +164,7 @@ public class PhoneSensorService extends Service implements SensorEventListener {
             mSensorManager.unregisterListener(this);
         }
 
-        //writeAndSendFiles();
+        writeAndSendFiles();
     }
 
     /**
@@ -173,55 +173,19 @@ public class PhoneSensorService extends Service implements SensorEventListener {
      */
     private void writeAndSendFiles(){
 
-        final String usernameLower = username.toLowerCase().replace(" ", "_");
+        FileSaver fileSaver = new FileSaver(username);
 
-        File rootDirectory =
-                new File(Environment.getExternalStorageDirectory() + File.separator
-                        + "GaitDetector" + File.separator + usernameLower);
+        fileSaver.writeFile(task, FileSaver.PHONE_ACCEL, accelerationRecords);
+        fileSaver.writeFile(task, FileSaver.PHONE_GYRO, gyroscopeRecords);
 
-        // Create parent directory if does not exist
-        if(!rootDirectory.isDirectory()) {
-            rootDirectory.mkdirs();
-        }
 
-        final String accelerometerFileHandle =
-                rootDirectory.getPath() + File.separator + usernameLower + "_" + "taskHere" + "_phone_accel.txt";
-
-        final String gyroscopeFileHandle =
-                rootDirectory.getPath() + File.separator + usernameLower + "_" + "taskHere" + "_phone_gyro.txt";
-
-        File accelerometerFile = new File(accelerometerFileHandle);
-        File gyroscopeFile = new File(gyroscopeFileHandle);
-
-        // Write the accel records to a file
-        PrintWriter writer = null;
-        try {
-            writer = new PrintWriter(accelerometerFile);
-            for (AccelerationRecord record : accelerationRecords) {
-                writer.println(record.toString());
-            }
-            writer.flush();
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        // Write the gyro records to a file
-        try {
-            writer = new PrintWriter(gyroscopeFile);
-            for (GyroscopeRecord record : gyroscopeRecords) {
-                writer.println(record.toString());
-            }
-            writer.flush();
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        /*
 
         // Email files
         new Thread(
                 new EmailData("wisdm.gaitlab@gmail.com", "WiSdM403!", username,
                         accelerometerFile.getAbsolutePath(), gyroscopeFile.getAbsolutePath())).start();
+        */
     }
 
     /**

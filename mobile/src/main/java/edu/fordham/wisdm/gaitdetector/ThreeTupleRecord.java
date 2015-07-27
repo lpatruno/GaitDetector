@@ -4,36 +4,45 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
- * Class to hold acceleration records
+ * Data structure to hold 3-tuple time series data. An extra field for the timestamp is an
+ * additional parameter. This implements the Serializable interface for data streaming from
+ * the Android Wear device to the phone.
+ *
+ * Note: Although not yet necessary, a base NTupleRecord could be created and this can be a
+ * subclass.
  *
  * @author Luigi Patruno
  */
-public class GyroscopeRecord implements Serializable{
+public class ThreeTupleRecord implements Serializable {
 
     /**
-     * The timestamp of when the record
+     * Timestamp of the record
      * @serial
      */
     private long ts;
 
     /**
-     * The angular velocity in the x-axis
+     * x-axis sensor recording
      * @serial
      */
     private float x;
 
     /**
-     * The angular velocity in the y-axis
+     * y-axis sensor recording
      * @serial
      */
     private float y;
     /**
-     * The angular velocity in the z-axis
+     * z-axis sensor recording
      * @serial
      */
     private float z;
 
-    static final long serialVersionUID = 2409678382753934076L;
+    /**
+     * Automatically generated serial number for ensuring that a object of this type can be safely
+     * deserialized.
+     */
+    private static final long serialVersionUID = 2345673456543874764L;
 
     /**
      * Used for serialization of the class
@@ -47,6 +56,7 @@ public class GyroscopeRecord implements Serializable{
         }
     }
 
+
     /**
      * Constructor to initialize acceleration records.
      *
@@ -55,7 +65,7 @@ public class GyroscopeRecord implements Serializable{
      * @param y
      * @param z
      */
-    public GyroscopeRecord(long ts, float x, float y, float z){
+    public ThreeTupleRecord(long ts, float x, float y, float z){
         this.ts = ts;
         this.x = x;
         this.y = y;

@@ -111,12 +111,12 @@ public class MainActivity extends Activity implements SensorEventListener {
     /**
      * The list of acceleration records
      */
-    private ArrayList<AccelerationRecord> accelerationRecords;
+    private ArrayList<ThreeTupleRecord> accelerationRecords;
 
     /**
      * The list of gyroscope records
      */
-    private ArrayList<GyroscopeRecord> gyroscopeRecords;
+    private ArrayList<ThreeTupleRecord> gyroscopeRecords;
 
 
     @Override
@@ -219,8 +219,8 @@ public class MainActivity extends Activity implements SensorEventListener {
      */
     private void registerSensorListeners(){
 
-        accelerationRecords = new ArrayList<AccelerationRecord>();
-        gyroscopeRecords = new ArrayList<GyroscopeRecord>();
+        accelerationRecords = new ArrayList<ThreeTupleRecord>();
+        gyroscopeRecords = new ArrayList<ThreeTupleRecord>();
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -292,10 +292,10 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         switch(event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
-                accelerationRecords.add(new AccelerationRecord(ts, x, y, z));
+                accelerationRecords.add(new ThreeTupleRecord(ts, x, y, z));
                 break;
             case Sensor.TYPE_GYROSCOPE:
-                gyroscopeRecords.add(new GyroscopeRecord(ts, x, y, z));
+                gyroscopeRecords.add(new ThreeTupleRecord(ts, x, y, z));
                 break;
         }
 

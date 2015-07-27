@@ -40,9 +40,14 @@ public class DataCollectionActivity extends Activity {
     private TextView mUsername;
 
     /**
-     * String to hold the passed username
+     * String to hold the passed username (for UI)
      */
     private String username;
+
+    /**
+     * username.toLowerCase().replace(" ", "_") for file labeling
+     */
+    private String usernameFileLabel;
 
     /**
      * TextView to display the task name
@@ -99,6 +104,11 @@ public class DataCollectionActivity extends Activity {
      */
     private static final String STOP_SAMPLING = "/stop-sampling";
 
+    /**
+     * Path String to pass username and task data to the ListenerService
+     */
+    private static final String USER_DATA = "/user-data";
+
 
     /**
      * Initialize the UI for the DataCollectionActivity.
@@ -139,7 +149,8 @@ public class DataCollectionActivity extends Activity {
         */
 
         username = "Luigi Patruno";
-        task = "Turn 360 degrees";
+        usernameFileLabel = username.toLowerCase().replace(" ", "_");
+        task = "BBS10";
 
         mUsername.setText(username);
         mTask.setText(task);
@@ -165,12 +176,36 @@ public class DataCollectionActivity extends Activity {
                     // Create intent to start sampling service
                     phoneSensorServiceIntent =
                             new Intent(getApplicationContext(), PhoneSensorService.class);
-                    phoneSensorServiceIntent.putExtra("USERNAME", username);
+                    phoneSensorServiceIntent.putExtra("USERNAME", usernameFileLabel);
                     phoneSensorServiceIntent.putExtra("TASK", task);
 
                     // Start the service and create a notification
                     startService(phoneSensorServiceIntent);
                     createNotification();
+
+                    // Pass message to the ListenerService
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            NodeApi.GetLocalNodeResult nodes = Wearable.NodeApi.getLocalNode(mGoogleApiClient).await();
+                            Node node = nodes.getNode();
+
+                            Log.d(TAG, "Activity Node is : "+node.getId()+ " - " + node.getDisplayName());
+
+                            String message = usernameFileLabel + "&&" + task;
+
+                            MessageApi.SendMessageResult result =
+                                    Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), USER_DATA, message.getBytes()).await();
+
+                            if (result.getStatus().isSuccess()) {
+                                Log.d(TAG, "Message: {" + message + "} sent to: " + node.getDisplayName());
+                            }
+                            else {
+                                Log.e(TAG, "ERROR: failed to send Activity Message");
+                            }
+                        }
+                    }).start();
                 }
 
             }
