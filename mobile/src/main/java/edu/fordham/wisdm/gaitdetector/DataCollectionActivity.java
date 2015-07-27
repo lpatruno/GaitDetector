@@ -150,7 +150,7 @@ public class DataCollectionActivity extends Activity {
         Intent intent = getIntent();
 
         User user = (User)intent.getParcelableExtra("USER");
-        username = user.getName();
+        username = user.getName().trim();
         usernameFileLabel = username.toLowerCase().replace(" ", "_");
 
         String[] tempTask = intent.getStringExtra("TASK").split("\\|");
@@ -189,7 +189,7 @@ public class DataCollectionActivity extends Activity {
                     phoneSensorServiceIntent =
                             new Intent(getApplicationContext(), PhoneSensorService.class);
                     phoneSensorServiceIntent.putExtra("USERNAME", usernameFileLabel);
-                    phoneSensorServiceIntent.putExtra("TASK", task);
+                    phoneSensorServiceIntent.putExtra("TASK", taskID);
 
                     // Start the service and create a notification
                     startService(phoneSensorServiceIntent);
@@ -205,7 +205,7 @@ public class DataCollectionActivity extends Activity {
 
                             Log.d(TAG, "Activity Node is : "+node.getId()+ " - " + node.getDisplayName());
 
-                            String message = usernameFileLabel + "&&" + task;
+                            String message = usernameFileLabel + "&&" + taskID;
 
                             MessageApi.SendMessageResult result =
                                     Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), USER_DATA, message.getBytes()).await();

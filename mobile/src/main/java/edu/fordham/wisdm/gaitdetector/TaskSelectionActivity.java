@@ -59,6 +59,11 @@ public class TaskSelectionActivity extends Activity {
      */
     private View positionOfItemSelected;
 
+    /**
+     * Array holding unformatted task Strings
+     */
+    String[] taskStringArray;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +81,8 @@ public class TaskSelectionActivity extends Activity {
          * Get string resources.
          */
         Resources res = getResources();
-        String[] taskStringArray = res.getStringArray(R.array.task_array);
+        //String[] taskStringArray = res.getStringArray(R.array.task_array);
+        taskStringArray = res.getStringArray(R.array.task_array);
         String notApplicable = res.getString(R.string.not_applicable);
 
         /**
@@ -120,7 +126,14 @@ public class TaskSelectionActivity extends Activity {
                 positionOfItemSelected = view;
 
                 // Get task title from Task object
-                taskChosen = tv.getText().toString();
+                /*
+                TODO
+                Grab the correct String from the HashMap by comparing the text value of
+                    taskChosen = tv.getText().toString()
+                to the values in the hashmap and then passing the new String
+                    key|value
+                 */
+                taskChosen = taskStringArray[position];
             }
         });
 
