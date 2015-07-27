@@ -22,6 +22,14 @@
             android:label="@string/title_activity_username" >
         </activity>
         <activity
+            android:name=".DemographicActivity"
+            android:label="@string/title_activity_username" >
+        </activity>
+        <activity
+            android:name=".TaskSelectionActivity"
+            android:label="@string/title_activity_username" >
+        </activity>
+        <activity
             android:name=".DataCollectionActivity"
             android:label="@string/title_activity_data_collection"
             android:screenOrientation="portrait" >
