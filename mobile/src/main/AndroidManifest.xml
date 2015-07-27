@@ -19,25 +19,28 @@
 
         <activity
             android:name=".UsernameActivity"
-            android:label="@string/title_activity_username" >
-        </activity>
-        <activity
-            android:name=".DemographicActivity"
-            android:label="@string/title_activity_username" >
-        </activity>
-        <activity
-            android:name=".TaskSelectionActivity"
-            android:label="@string/title_activity_username" >
-        </activity>
-        <activity
-            android:name=".DataCollectionActivity"
-            android:label="@string/title_activity_data_collection"
-            android:screenOrientation="portrait" >
+            android:label="@string/title_activity_username"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".DemographicActivity"
+            android:label="@string/title_activity_username"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".TaskSelectionActivity"
+            android:label="@string/title_activity_username"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".DataCollectionActivity"
+            android:label="@string/title_activity_data_collection"
+            android:screenOrientation="portrait" >
         </activity>
 
         <service
