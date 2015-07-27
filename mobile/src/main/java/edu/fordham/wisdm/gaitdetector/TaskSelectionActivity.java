@@ -144,10 +144,11 @@ public class TaskSelectionActivity extends Activity {
                     TextView tv = ((TextView) positionOfItemSelected.findViewById(R.id.layout_completion_date));
                     tv.setText(getString(R.string.date_completed) + currentDate);
 
-//                  Intent i = new Intent(TaskSelectionActivity.this, DataCollectionActivity.class);
-//                  i.putExtra("TASK", taskChosen);
-//                  i.putExtra("USER", user);
-//                  startActivity(i);
+                    Intent i = new Intent(TaskSelectionActivity.this, DataCollectionActivity.class);
+                    i.putExtra("USER", user);
+                    i.putExtra("TASK", taskChosen);
+
+                    startActivity(i);
                 }
                 else {
                     Toast.makeText(getApplicationContext(), R.string.no_task_chosen, Toast.LENGTH_SHORT).show();

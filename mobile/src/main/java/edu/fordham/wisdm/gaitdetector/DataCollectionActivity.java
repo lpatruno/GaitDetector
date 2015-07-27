@@ -55,9 +55,14 @@ public class DataCollectionActivity extends Activity {
     private TextView mTask;
 
     /**
-     * String to hold the passed task
+     * String to hold the passed task description for UI view
      */
     private String task;
+
+    /**
+     * BBS number for file labeling
+     */
+    private String taskID;
 
     /**
      * Button to start the data sampling service
@@ -141,16 +146,23 @@ public class DataCollectionActivity extends Activity {
      */
     private void retrieveAndSetPassedData(){
 
-        /*
+
         Intent intent = getIntent();
 
-        username = intent.getStringExtra("USERNAME");
-        task = intent.getStringExtra("TASK");
-        */
-
-        username = "Luigi Patruno";
+        User user = (User)intent.getParcelableExtra("USER");
+        username = user.getName();
         usernameFileLabel = username.toLowerCase().replace(" ", "_");
-        task = "BBS10";
+
+        String[] tempTask = intent.getStringExtra("TASK").split("\\|");
+
+        if (tempTask.length == 2) {
+            taskID = tempTask[0];
+            task = tempTask[1];
+        } else {
+            Log.e(TAG, "Data not passed correctly between classes.");
+            task = "NULL";
+            taskID = "000";
+        }
 
         mUsername.setText(username);
         mTask.setText(task);
