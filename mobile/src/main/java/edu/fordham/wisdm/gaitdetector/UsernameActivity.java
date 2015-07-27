@@ -5,9 +5,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import android.content.Intent;
+
 
 /**
- * To be filled in by Julia Getsos
+ * Class that prompts user to input name.
+ * Name is then converted into all lowercase version with ' ' replaced
+ * with '_'.
+ *
  */
 public class UsernameActivity extends Activity {
 
@@ -17,7 +26,27 @@ public class UsernameActivity extends Activity {
     private final String TAG = "UsernameActivity";
 
     /**
-     * Function to load the UI elements
+     * Button to begin next activity
+     */
+    private Button mNextButton;
+
+    /**
+     * EditText to hold username
+     */
+    private EditText mUsernameText;
+
+    /**
+     * Object that holds individual user information.
+     */
+    private User user;
+
+    /**
+     * String to hold all lower case version of username with ' ' replaced with '_'
+     */
+    private String usernameString;
+
+    /**
+     * method to load the UI elements
      *
      * @param savedInstanceState
      */
@@ -26,9 +55,42 @@ public class UsernameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_username);
 
-        Log.d(TAG, "onCreated method called");
-    }
+        Log.d(TAG, "onCreate method called");
 
+        mNextButton = (Button)findViewById(R.id.username_next_button);
+        mUsernameText = (EditText) findViewById(R.id.username_name_field);
+
+        /**
+         * method that waits for user to click next button
+         */
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * method called when user clicks next button
+             * and determines if entered username is valid.
+             *
+             * @param v
+             */
+            @Override
+            public void onClick(View v) {
+
+                // convert the user input to a string
+                usernameString = mUsernameText.getText().toString();
+
+                if (!usernameString.equals("")) {
+                    user = new User(usernameString);
+                    Intent i = new Intent(UsernameActivity.this, DemographicActivity.class);
+                    i.putExtra("USER", user);
+                    startActivity(i);
+
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.invalid_username, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
