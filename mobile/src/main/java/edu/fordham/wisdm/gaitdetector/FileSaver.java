@@ -1,6 +1,7 @@
 package edu.fordham.wisdm.gaitdetector;
 
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -59,7 +60,6 @@ public class FileSaver {
                 "GaitDetector" + File.separator + USERNAME;
 
         rootDirectory = createRootDirectory(rootPath);
-
     }
 
     /**
@@ -69,12 +69,32 @@ public class FileSaver {
 
         File rootDirectory = new File(rootPath);
 
-        // Create parent directory if does not exist
+        // Create root directory if does not exist
         if(!rootDirectory.isDirectory()) {
             rootDirectory.mkdirs();
         }
 
         return rootDirectory;
+    }
+
+    /**
+     * Create a subdirectory for a particular BBS task within a user's file directory
+     * i.e. GaitDetector/luigi_patruno/BBS10/
+     *
+     * @param task
+     */
+    private File createSubdirectory(String task) {
+
+        final String subdirectoryPath = rootDirectory.getPath() + File.separator + task;
+
+        File subdirectory = new File(subdirectoryPath);
+
+        // Create sub directory if does not exist
+        if(!subdirectory.isDirectory()) {
+            subdirectory.mkdirs();
+        }
+
+        return subdirectory;
     }
 
     /**
@@ -87,7 +107,11 @@ public class FileSaver {
     public void writeFile(String task, String deviceSensor,
                            ArrayList<ThreeTupleRecord> dataRecords) {
 
-        final String recordFilePath = rootDirectory.getPath() + File.separator + USERNAME +
+        Log.d(TAG, USERNAME + task);
+
+        File subdirectory = createSubdirectory(task);
+
+        final String recordFilePath = subdirectory.getPath() + File.separator + USERNAME +
                 "_" + task + deviceSensor;
 
         File recordFile = new File(recordFilePath);
@@ -108,4 +132,5 @@ public class FileSaver {
             e.printStackTrace();
         }
     }
+
 }

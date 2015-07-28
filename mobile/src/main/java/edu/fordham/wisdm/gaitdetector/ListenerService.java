@@ -72,6 +72,7 @@ public class ListenerService extends WearableListenerService {
             if (message.length == 2) {
                 username = message[0];
                 task = message[1];
+                Log.d(TAG, "User: " + username + "\tTask: " + task);
             }
         }
     }
@@ -89,8 +90,6 @@ public class ListenerService extends WearableListenerService {
 
             if (event.getType() == DataEvent.TYPE_CHANGED &&
                     event.getDataItem().getUri().getPath().equals("/sensor-data")) {
-
-                Log.d(TAG, "Acquiring sensor data from wearable");
 
                 DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
 
@@ -160,5 +159,6 @@ public class ListenerService extends WearableListenerService {
 
         fileSaver.writeFile(task, FileSaver.WATCH_ACCEL, accelerationRecords);
         fileSaver.writeFile(task, FileSaver.WATCH_GYRO, gyroscopeRecords);
+
     }
 }
